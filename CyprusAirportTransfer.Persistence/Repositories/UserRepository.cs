@@ -19,5 +19,9 @@ namespace CyprusAirportTransfer.Persistence.Repositories
         {
             _repository = repository;
         }
+
+        public User GetUserByUsername(string username) => _repository.Entities.Where(x => x.UserName == username).FirstOrDefault();
+
+        public User GetUserByEmail(string email) => _repository.Entities.Where(x => x.Email == email).FirstOrDefault();
     }
 }

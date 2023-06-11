@@ -9,5 +9,8 @@ namespace CyprusAirportTransfer.App.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        public User GetUserByUsername(string username);
+
+        public User GetUserByEmail(string email);
     }
 }

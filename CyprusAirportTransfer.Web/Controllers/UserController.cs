@@ -6,18 +6,22 @@ using CyprusAirportTransfer.App.Features.Users.Queries.GetUserById;
 using CyprusAirportTransfer.App.Features.Users.Queries.GetUsersWithPagination;
 using CyprusAirportTransfer.App.Features.Users.Queries.GetUserWithPagination;
 using CyprusAirportTransfer.Shared;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CyprusAirportTransfer.Web.Controllers
 {
     public class UserController : ApiControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IValidator<CreateUserCommand> _createUserValidator;
 
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator, IValidator<CreateUserCommand> createUserValidator)
         {
             _mediator = mediator;
+            _createUserValidator = createUserValidator;
         }
 
         [HttpGet]
@@ -53,7 +57,17 @@ namespace CyprusAirportTransfer.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<Result<int>>> Create(CreateUserCommand command)
         {
-            return await _mediator.Send(command);
+
+            // Call Validate or ValidateAsync and pass the object which needs to be validated
+            var result = _createUserValidator.Validate(command);
+
+            if (result.IsValid)
+            {
+                return await _mediator.Send(command);
+            }
+
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
         [HttpPut("{id}")]

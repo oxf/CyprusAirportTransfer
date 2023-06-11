@@ -2,6 +2,8 @@
 using MediatR;
 using System.Reflection;
 using FluentValidation;
+using FluentValidation.AspNetCore;
+using CyprusAirportTransfer.App.Features.Users.Commands.CreateUser;
 
 namespace CyprusAirportTransfer.App.Extensions
 {
@@ -27,6 +29,7 @@ namespace CyprusAirportTransfer.App.Extensions
         private static void AddValidators(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddScoped<IValidator<CreateUserCommand>, CreateUserValidator>();
         }        
     }
 }

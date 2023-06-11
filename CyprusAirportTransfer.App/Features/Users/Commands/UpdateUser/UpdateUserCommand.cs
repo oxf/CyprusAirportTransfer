@@ -37,6 +37,8 @@ namespace CyprusAirportTransfer.App.Features.Users.Commands.UpdateUser
             {
                 user.UserName = command.UserName;
                 user.Email = command.Email;
+                user.UpdatedBy = 0;
+                user.UpdatedDate = DateTime.Now;
 
                 await _unitOfWork.Repository<User>().UpdateAsync(user);
                 user.AddDomainEvent(new UserUpdatedEvent(user));
