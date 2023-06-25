@@ -23,21 +23,22 @@ namespace CyprusAirportTransfer.App.Features.Login.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository; 
+        private readonly IUserRepository _userRepository;
+        private readonly IHashingService _hashingService;
 
-        public PostLoginCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository)
+        public PostLoginCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository, IHashingService hashingService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userRepository = userRepository;
+            _hashingService = hashingService;
         }
 
         public async Task<Result<int>> Handle(PostLoginCommand request, CancellationToken cancellationToken)
         {
-
-
             User userToLogin = _userRepository.GetUserByUsername(request.Username);
-            if(request.Password == userToLogin.Password)
+            byte[] hashedPassword = await _hashingService.Encrypt(request.Password, userToLogin.Salt, cancellationToken);
+            if (Enumerable.SequenceEqual(hashedPassword,userToLogin.Password))
             {
                 //ok
                 return await Result<int>.SuccessAsync(1, "Logged in");

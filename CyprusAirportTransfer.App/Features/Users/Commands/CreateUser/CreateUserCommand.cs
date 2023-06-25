@@ -18,28 +18,29 @@ namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Salt { get; set; }
     }
 
     internal class CreatePlayerCommandHandler : IRequestHandler<CreateUserCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public CreatePlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHashingService _hashingService;
+        public CreatePlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHashingService hashingService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _hashingService = hashingService;
         }
 
         public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
+            byte[] salt = await _hashingService.GenerateSalt();
             var user = new User()
             {
                 UserName = command.UserName,
                 Email = command.Email,
-                Password = command.Password,
-                Salt = command.Salt,
+                Password = await _hashingService.Encrypt(command.Password, salt, cancellationToken),
+                Salt = salt,
                 CreatedBy = 0,
                 CreatedDate = DateTime.Now,
                 UpdatedBy = 0,
