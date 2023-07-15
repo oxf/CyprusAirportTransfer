@@ -16,14 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyprusAirportTransfer.Share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyprusAirportTransfer.Persistence", "CyprusAirportTransfer.Persistence\CyprusAirportTransfer.Persistence.csproj", "{4E695750-9BBE-4056-8360-5DE3B6BBA47E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8E4AF2CA-38DC-41B5-92E1-CA057435C88D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyprusAirportTransfer.Infrastructure", "CyprusAirportTransfer.Infrastructure\CyprusAirportTransfer.Infrastructure.csproj", "{4F49C9FD-B917-440D-9CBA-6E0DBEE4BEF8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyprusAirportTransfer.Frontend", "CyprusAirportTransfer.Frontend\CyprusAirportTransfer.Frontend.csproj", "{6FDBA444-2CB8-45BA-B27E-44FF003D0D72}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1B408159-9026-48F9-B58E-ED7E570171A5} = {1B408159-9026-48F9-B58E-ED7E570171A5}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,17 +48,9 @@ Global
 		{4F49C9FD-B917-440D-9CBA-6E0DBEE4BEF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F49C9FD-B917-440D-9CBA-6E0DBEE4BEF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F49C9FD-B917-440D-9CBA-6E0DBEE4BEF8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FDBA444-2CB8-45BA-B27E-44FF003D0D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FDBA444-2CB8-45BA-B27E-44FF003D0D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FDBA444-2CB8-45BA-B27E-44FF003D0D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FDBA444-2CB8-45BA-B27E-44FF003D0D72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C4F27965-B2F9-4275-A285-9C0ABD294E98} = {8E4AF2CA-38DC-41B5-92E1-CA057435C88D}
-		{694A0510-E949-4068-9BAA-CEA53F8A14A1} = {8E4AF2CA-38DC-41B5-92E1-CA057435C88D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D06FA90F-8306-478F-AA85-40E18CB08289}
