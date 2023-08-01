@@ -8,6 +8,7 @@ using CyprusAirportTransfer.App.Features.Users.Queries.GetUserWithPagination;
 using CyprusAirportTransfer.Shared;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -25,7 +26,7 @@ namespace CyprusAirportTransfer.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Result<List<GetAllUsersDto>>>> Get()
+        public async Task<Result<List<GetAllUsersDto>>> Get()
         {
             return await _mediator.Send(new GetAllUsersQuery());
         }

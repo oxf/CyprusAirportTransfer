@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CyprusAirportTransfer.App.Common.Mappings;
 using CyprusAirportTransfer.Shared;
+using System.Collections;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
 {
@@ -35,11 +37,12 @@ namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
         public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
             byte[] salt = await _hashingService.GenerateSalt();
+            byte[] hashedPassword = await _hashingService.Encrypt(command.Password, salt, cancellationToken);
             var user = new User()
             {
                 UserName = command.UserName,
                 Email = command.Email,
-                Password = await _hashingService.Encrypt(command.Password, salt, cancellationToken),
+                Password = hashedPassword,
                 Salt = salt,
                 CreatedBy = 0,
                 CreatedDate = DateTime.Now,

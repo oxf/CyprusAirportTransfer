@@ -1,0 +1,49 @@
+﻿@page "/users"
+@using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
+@using CyprusAirportTransfer.Frontend.Services;
+@inject HttpClient Http
+
+<PageTitle>Users</PageTitle>
+
+<h1>List of Users</h1>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<GetAllUsersDto> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new UserService();
+        var result = await client.GetUsersAsync();
+        if(result.Succeeded)
+        {
+            users = result.Data;
+        }
+    }
+}

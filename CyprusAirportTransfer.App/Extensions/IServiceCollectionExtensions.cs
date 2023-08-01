@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using System.Reflection;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+using Blazored.FluentValidation;
 using CyprusAirportTransfer.App.Features.Users.Commands.CreateUser;
+using FluentValidation;
 
 namespace CyprusAirportTransfer.App.Extensions
 {
@@ -24,12 +24,11 @@ namespace CyprusAirportTransfer.App.Extensions
         private static void AddMediator(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        }
+        } 
 
         private static void AddValidators(this IServiceCollection services)
         {
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddScoped<IValidator<CreateUserCommand>, CreateUserValidator>();
+           services.AddScoped<IValidator<CreateUserCommand>, CreateUserValidator>();
         }        
     }
 }
