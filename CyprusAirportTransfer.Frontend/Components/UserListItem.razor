@@ -1,0 +1,21 @@
+﻿@using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
+<div class="user-list-item col-md-1">
+    <div class="col-md-4">
+        <h2>@user.UserName</h2>
+        <h3>@user.Email</h3>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="btn">View</div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public GetAllUsersDto? user { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        ArgumentNullException.ThrowIfNull(user);
+    }
+}

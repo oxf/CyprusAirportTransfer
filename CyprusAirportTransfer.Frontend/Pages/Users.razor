@@ -13,25 +13,10 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
             @foreach (var user in users)
             {
-                <tr>
-                    <td>@user.Id</td>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
-                </tr>
+                <CyprusAirportTransfer.Frontend.Components.UserListItem user="user"/>
             }
-        </tbody>
-    </table>
 }
 
 @code {
