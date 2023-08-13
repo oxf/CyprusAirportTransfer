@@ -1,4 +1,5 @@
 ﻿using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
+using CyprusAirportTransfer.App.Features.Users.Queries.GetUserById;
 using CyprusAirportTransfer.Core.Entities;
 using CyprusAirportTransfer.Shared;
 using CyprusAirportTransfer.Shared.Interfaces;
@@ -19,6 +20,12 @@ namespace CyprusAirportTransfer.Frontend.Services
         public async Task<Result<List<GetAllUsersDto>>> GetUsersAsync()
         {
             return await httpClient.GetFromJsonAsync<Result<List<GetAllUsersDto>>>(httpClient.BaseAddress);
+        }
+
+
+        public async Task<Result<GetUserByIdDto>> GetUserByIdAsync(int id)
+        {
+            return await httpClient.GetFromJsonAsync<Result<GetUserByIdDto>>($"{httpClient.BaseAddress}/{id}");
         }
     }
 }

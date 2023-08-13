@@ -1,21 +1,65 @@
 ﻿@using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
-<div class="user-list-item col-md-1">
-    <div class="col-md-4">
-        <h2>@user.UserName</h2>
-        <h3>@user.Email</h3>
-    </div>
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div class="btn">View</div>
+@using CyprusAirportTransfer.App.Features.Users.Queries.GetUserById;
+@using CyprusAirportTransfer.Frontend.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+<div class="user-list-item container">
+    <div class="row">
+        <div class="col-md-10">
+            <row>
+                <h5>@user.UserName</h5>
+                <p>@user.Email</p>
+            </row>
+            <row style="@(Collapsed ? "display:none;" : "display:block;")">
+            @if (userFull != null)
+            {
+                    <EditForm Model="@userFull" >
+                     ID: <InputNumber @bind-Value="@userFull.Id" />
+                    </EditForm>
+            } else
+            {
+                    <p>Loading...</p>
+            }
+            </row>
+        </div>
+        <div class="col-md-2 user-list-item-buttons">
+            <div id="btnView" @onclick="()=> {
+                this.Collapsed = !this.Collapsed;
+                if(!this.Collapsed) {
+                    Expand();
+                }
+            }" style="display:block" class="btn btn-primary user-list-item-button">@(Collapsed ? "View" : "Hide")</div>
+            <div id="btnSave" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
+            <div id="btnDelete" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-danger user-list-item-button">Delete</div>
+        </div>
     </div>
 </div>
 
 @code {
+
+
     [Parameter]
     public GetAllUsersDto? user { get; set; }
+
+    [Parameter]
+    public GetUserByIdDto? userFull { get; set; }
+
+    private bool Collapsed = true;
 
     protected override void OnParametersSet()
     {
         ArgumentNullException.ThrowIfNull(user);
+    }
+
+    protected async Task Expand()
+    {
+        if(user != null)
+        {
+            var service = new UserService();
+            var userFullRes = await service.GetUserByIdAsync(user.Id);
+            if(userFullRes.Succeeded)
+            {
+                userFull = userFullRes.Data;
+            }
+        }
     }
 }
