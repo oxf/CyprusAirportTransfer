@@ -12,7 +12,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Users.Queries.GetUserById
+namespace CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById
 {
     public record GetUserByIdQuery : IRequest<Result<GetUserByIdDto>>
     {

@@ -13,7 +13,7 @@ using CyprusAirportTransfer.Shared;
 using System.Collections;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser
 {
     public record CreateUserCommand : IRequest<Result<int>>, IMapFrom<User>
     {

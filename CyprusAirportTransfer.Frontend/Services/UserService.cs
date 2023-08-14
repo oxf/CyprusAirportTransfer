@@ -1,8 +1,7 @@
-﻿using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
-using CyprusAirportTransfer.App.Features.Users.Queries.GetUserById;
-using CyprusAirportTransfer.Core.Entities;
+﻿using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
+using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
 using CyprusAirportTransfer.Shared;
-using CyprusAirportTransfer.Shared.Interfaces;
 using System.Net.Http.Json;
 
 namespace CyprusAirportTransfer.Frontend.Services
@@ -22,10 +21,14 @@ namespace CyprusAirportTransfer.Frontend.Services
             return await httpClient.GetFromJsonAsync<Result<List<GetAllUsersDto>>>(httpClient.BaseAddress);
         }
 
-
         public async Task<Result<GetUserByIdDto>> GetUserByIdAsync(int id)
         {
             return await httpClient.GetFromJsonAsync<Result<GetUserByIdDto>>($"{httpClient.BaseAddress}/{id}");
+        }
+
+        public async Task<HttpResponseMessage> UpdateUser(UpdateUserCommand updateUserCommand)
+        {
+            return await httpClient.PutAsJsonAsync<UpdateUserCommand>($"{httpClient.BaseAddress}/{updateUserCommand.Id}", updateUserCommand);
         }
     }
 }

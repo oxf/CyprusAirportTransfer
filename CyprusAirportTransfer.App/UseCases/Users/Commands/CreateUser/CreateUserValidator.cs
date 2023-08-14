@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser
 {
     public class CreateUserValidator : AbstractValidator<CreateUserCommand>
     {

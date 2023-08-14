@@ -1,5 +1,7 @@
-﻿@using CyprusAirportTransfer.App.Features.Users.Queries.GetAllUsers;
-@using CyprusAirportTransfer.App.Features.Users.Queries.GetUserById;
+﻿@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
+@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 @using CyprusAirportTransfer.Frontend.Services;
 @using Microsoft.AspNetCore.Components.Forms;
 <div class="user-list-item container">
@@ -10,15 +12,45 @@
                 <p>@user.Email</p>
             </row>
             <row style="@(Collapsed ? "display:none;" : "display:block;")">
-            @if (userFull != null)
-            {
-                    <EditForm Model="@userFull" >
-                     ID: <InputNumber @bind-Value="@userFull.Id" />
+                @if(userFull == null)
+                {
+                    <p><em>Loading...</em></p>
+                } else
+                {
+                    <EditForm Model="@userFull">
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">ID</div>
+                                <div class="col-md-7"><InputNumber @bind-Value="@userFull.Id" contenteditable="false" /></div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Email</div>
+                                <div class="col-md-7"><InputText @bind-Value="@userFull.Email" contenteditable="true" /></div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Username</div>
+                                <div class="col-md-7"><InputText @bind-Value="@userFull.UserName" contenteditable="true" /></div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Created</div>
+                                <div class="col-md-7"><InputDate @bind-Value="@userFull.CreatedDate" contenteditable="false" /></div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Updated</div>
+                                <div class="col-md-7"><InputDate @bind-Value="@userFull.UpdatedDate" contenteditable="false" /></div>
+                            </div>
+                        </p>
                     </EditForm>
-            } else
-            {
-                    <p>Loading...</p>
-            }
+                }
+
             </row>
         </div>
         <div class="col-md-2 user-list-item-buttons">
@@ -28,7 +60,7 @@
                     Expand();
                 }
             }" style="display:block" class="btn btn-primary user-list-item-button">@(Collapsed ? "View" : "Hide")</div>
-            <div id="btnSave" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
+            <div id="btnSave" @onclick="HandleValidSubmitAsync" type="submit" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
             <div id="btnDelete" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-danger user-list-item-button">Delete</div>
         </div>
     </div>
@@ -36,7 +68,7 @@
 
 @code {
 
-
+    private UserService userService { get; set; }
     [Parameter]
     public GetAllUsersDto? user { get; set; }
 
@@ -50,15 +82,27 @@
         ArgumentNullException.ThrowIfNull(user);
     }
 
+    protected override void OnInitialized() => userService = new UserService();
+
+    private async Task HandleValidSubmitAsync()
+    {
+        await userService.UpdateUser(new UpdateUserCommand
+        {
+            Id = userFull.Id,
+            Email = userFull.Email,
+            UserName = userFull.UserName
+        });
+    }
+
     protected async Task Expand()
     {
         if(user != null)
         {
-            var service = new UserService();
-            var userFullRes = await service.GetUserByIdAsync(user.Id);
+            var userFullRes = await userService.GetUserByIdAsync(user.Id);
             if(userFullRes.Succeeded)
             {
                 userFull = userFullRes.Data;
+                StateHasChanged();
             }
         }
     }

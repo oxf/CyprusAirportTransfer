@@ -2,7 +2,7 @@
 using MediatR;
 using System.Reflection;
 using Blazored.FluentValidation;
-using CyprusAirportTransfer.App.Features.Users.Commands.CreateUser;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
 using FluentValidation;
 
 namespace CyprusAirportTransfer.App.Extensions

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CyprusAirportTransfer.App.Extensions;
-using CyprusAirportTransfer.App.Features.Users.Queries.GetUserWithPagination;
+using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination;
 using CyprusAirportTransfer.App.Interfaces;
 using CyprusAirportTransfer.Core.Entities;
 using CyprusAirportTransfer.Shared;
@@ -13,7 +13,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Users.Queries.GetUsersWithPagination
+namespace CyprusAirportTransfer.App.UseCases.Users.Queries.GetUsersWithPagination
 {
     public record GetUsersWithPaginationQuery : IRequest<PaginatedResult<GetUsersWithPaginationDto>>
     {

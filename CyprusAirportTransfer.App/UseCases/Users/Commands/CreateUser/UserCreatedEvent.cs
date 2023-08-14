@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.CreateUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser
 {
     public class UserCreatedEvent : BaseEvent
     {

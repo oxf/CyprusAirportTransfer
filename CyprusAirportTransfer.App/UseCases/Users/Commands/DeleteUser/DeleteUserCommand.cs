@@ -5,15 +5,7 @@ using CyprusAirportTransfer.Core.Entities;
 using CyprusAirportTransfer.Shared;
 using MediatR;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-
-namespace CyprusAirportTransfer.App.Features.Users.Commands.DeleteUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.DeleteUser
 {
     public record DeleteUserCommand : IRequest<Result<int>>, IMapFrom<User>
     {

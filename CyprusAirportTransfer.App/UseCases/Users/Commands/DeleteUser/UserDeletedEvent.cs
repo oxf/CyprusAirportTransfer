@@ -1,7 +1,7 @@
 ﻿using CyprusAirportTransfer.Core.Commons;
 using CyprusAirportTransfer.Core.Entities;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.DeleteUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.DeleteUser
 {
     public class UserDeletedEvent : BaseEvent
     {

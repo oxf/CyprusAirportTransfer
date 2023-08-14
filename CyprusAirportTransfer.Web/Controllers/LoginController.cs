@@ -1,5 +1,5 @@
-﻿using CyprusAirportTransfer.App.Features.Login.Commands;
-using CyprusAirportTransfer.App.Features.Users.Commands.CreateUser;
+﻿using CyprusAirportTransfer.App.UseCases.Login.Commands;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
 using CyprusAirportTransfer.Shared;
 using CyprusAirportTransfer.Web.Controllers;
 using FluentValidation;

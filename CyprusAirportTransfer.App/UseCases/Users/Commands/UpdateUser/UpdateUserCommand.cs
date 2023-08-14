@@ -9,8 +9,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using CyprusAirportTransfer.App.Features.Users.Commands.UpdateUser;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.UpdateUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
 {
     public record UpdateUserCommand : IRequest<Result<int>>
     {

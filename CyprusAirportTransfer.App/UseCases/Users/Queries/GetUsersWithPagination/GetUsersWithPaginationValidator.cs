@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Users.Queries.GetUsersWithPagination
+namespace CyprusAirportTransfer.App.UseCases.Users.Queries.GetUsersWithPagination
 {
     public class GetUsersWithPaginationValidator : AbstractValidator<GetUsersWithPaginationQuery>
     {
