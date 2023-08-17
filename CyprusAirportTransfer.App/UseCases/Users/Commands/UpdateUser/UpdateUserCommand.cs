@@ -10,6 +10,8 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using CyprusAirportTransfer.App.Features.Users.Commands.UpdateUser;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
+using FluentValidation;
 
 namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
 {
@@ -24,15 +26,22 @@ namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<UpdateUserCommand> _updateUserValidator;
 
-        public UpdateUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<UpdateUserCommand> updateUserValidator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _updateUserValidator = updateUserValidator;
         }
 
         public async Task<Result<int>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
+            var validationResult = await _updateUserValidator.ValidateAsync(command, cancellationToken);
+            if(!validationResult.IsValid)
+            {
+                return await Result<int>.FailureAsync("Validation failed");
+            }
             var user = await _unitOfWork.Repository<User>().GetByIdAsync(command.Id);
             if (user != null)
             {

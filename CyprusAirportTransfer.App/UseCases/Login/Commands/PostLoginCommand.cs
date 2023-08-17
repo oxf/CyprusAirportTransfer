@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
-using CyprusAirportTransfer.App.Features.Users.Commands.CreateUser;
 using CyprusAirportTransfer.App.Interfaces;
 using CyprusAirportTransfer.App.Interfaces.Repositories;
 using CyprusAirportTransfer.Core.Entities;
 using CyprusAirportTransfer.Shared;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CyprusAirportTransfer.App.Features.Login.Commands
+namespace CyprusAirportTransfer.App.UseCases.Login.Commands
 {
     public record class PostLoginCommand : IRequest<Result<int>>
     {

@@ -1,0 +1,71 @@
+﻿@using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
+@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
+@using CyprusAirportTransfer.Frontend.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+<div class="user-list-item container">
+    <div class="row">
+        <div class="col-md-10">
+            <row>
+                <h5>@title</h5>
+            </row>
+            <row>
+                <p id="labelMessage" class="col-md-2 alert-success">@message</p>
+            </row>
+            <row>
+                 <EditForm Model="@createUserCommand">
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Email</div>
+                                <div class="col-md-7"><InputText @bind-Value="@createUserCommand.Email" contenteditable="true" /></div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group row">
+                                <div class="col-md-2">Username</div>
+                                <div class="col-md-7"><InputText @bind-Value="@createUserCommand.UserName" contenteditable="true" /></div>
+                            </div>
+                    </p>
+                    <p>
+                        <div class="form-group row">
+                            <div class="col-md-2">Password</div>
+                            <div class="col-md-7"><InputText @bind-Value="@createUserCommand.Password" contenteditable="true" /></div>
+                        </div>
+                    </p>
+                </EditForm>
+            </row>
+        </div>
+        <div class="col-md-2 user-list-item-buttons">
+            <div id="btnSave" @onclick="HandleValidSubmitAsync" type="submit" class="btn btn-primary user-list-item-button">Save</div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string title = "Create new User";
+    private string message { get; set; }
+
+    private CreateUserCommand createUserCommand = new CreateUserCommand();
+
+    private UserService userService { get; set; }
+
+    private bool Collapsed = true;
+
+    protected override void OnInitialized() => userService = new UserService();
+
+    private async Task HandleValidSubmitAsync()
+    {
+        var createResult = await userService.CreateUser(createUserCommand);
+        if(createResult.IsSuccessStatusCode)
+        {
+            message = "User was created";
+            Clean();
+        }
+    }
+
+    protected void Clean()
+    {
+        createUserCommand = new CreateUserCommand();
+    }
+}

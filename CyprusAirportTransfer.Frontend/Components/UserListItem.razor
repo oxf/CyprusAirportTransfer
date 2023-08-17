@@ -1,15 +1,17 @@
 ﻿@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 @using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
 @using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
-@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 @using CyprusAirportTransfer.Frontend.Services;
 @using Microsoft.AspNetCore.Components.Forms;
 <div class="user-list-item container">
     <div class="row">
         <div class="col-md-10">
             <row>
-                <h5>@user.UserName</h5>
-                <p>@user.Email</p>
+                <h5>@title</h5>
+                <p>@subtitle</p>
+            </row>
+            <row>
+                <p id="labelMessage" class="col-md-2 alert-success">@message</p>
             </row>
             <row style="@(Collapsed ? "display:none;" : "display:block;")">
                 @if(userFull == null)
@@ -58,6 +60,8 @@
                 this.Collapsed = !this.Collapsed;
                 if(!this.Collapsed) {
                     Expand();
+                } else {
+                    message = null;
                 }
             }" style="display:block" class="btn btn-primary user-list-item-button">@(Collapsed ? "View" : "Hide")</div>
             <div id="btnSave" @onclick="HandleValidSubmitAsync" type="submit" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
@@ -67,6 +71,9 @@
 </div>
 
 @code {
+    private string title { get; set; }
+    private string subtitle { get; set; }
+    private string message { get; set; }
 
     private UserService userService { get; set; }
     [Parameter]
@@ -80,18 +87,24 @@
     protected override void OnParametersSet()
     {
         ArgumentNullException.ThrowIfNull(user);
+        title = user.UserName;
+        subtitle = user.Email;
     }
 
     protected override void OnInitialized() => userService = new UserService();
 
     private async Task HandleValidSubmitAsync()
     {
-        await userService.UpdateUser(new UpdateUserCommand
+        var updateResult = await userService.UpdateUser(new UpdateUserCommand
         {
             Id = userFull.Id,
             Email = userFull.Email,
             UserName = userFull.UserName
         });
+        message = updateResult.RequestMessage.ToString();
+        title = userFull.UserName;
+        subtitle = userFull.Email;
+        StateHasChanged();
     }
 
     protected async Task Expand()

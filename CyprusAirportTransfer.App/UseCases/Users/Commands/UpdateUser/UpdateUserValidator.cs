@@ -1,7 +1,7 @@
 ﻿using CyprusAirportTransfer.App.Interfaces.Repositories;
 using FluentValidation;
 
-namespace CyprusAirportTransfer.App.Features.Users.Commands.UpdateUser
+namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
 {
     public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
     {

@@ -1,6 +1,5 @@
 ﻿using CyprusAirportTransfer.App.UseCases.Users.Commands.DeleteUser;
 using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
-using CyprusAirportTransfer.App.UseCases.Users.Commands.DeleteUser;
 using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
 using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
@@ -35,7 +34,12 @@ namespace CyprusAirportTransfer.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Result<GetUserByIdDto>>> GetUsersById(int id)
         {
-            return await _mediator.Send(new GetUserByIdQuery(id));
+            var result = await _mediator.Send(new GetUserByIdQuery(id));
+            if (result.Data == null)
+            {
+                return NotFound();
+            }
+            else return result;
         }
 
         [HttpGet]

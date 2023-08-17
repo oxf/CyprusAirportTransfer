@@ -4,6 +4,7 @@ using System.Reflection;
 using Blazored.FluentValidation;
 using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
 using FluentValidation;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 
 namespace CyprusAirportTransfer.App.Extensions
 {
@@ -29,6 +30,7 @@ namespace CyprusAirportTransfer.App.Extensions
         private static void AddValidators(this IServiceCollection services)
         {
            services.AddScoped<IValidator<CreateUserCommand>, CreateUserValidator>();
+           services.AddScoped<IValidator<UpdateUserCommand>, UpdateUserValidator>();
         }        
     }
 }

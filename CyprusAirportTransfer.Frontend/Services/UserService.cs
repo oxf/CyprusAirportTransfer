@@ -3,6 +3,7 @@ using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
 using CyprusAirportTransfer.Shared;
 using System.Net.Http.Json;
+using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
 
 namespace CyprusAirportTransfer.Frontend.Services
 {
@@ -29,6 +30,11 @@ namespace CyprusAirportTransfer.Frontend.Services
         public async Task<HttpResponseMessage> UpdateUser(UpdateUserCommand updateUserCommand)
         {
             return await httpClient.PutAsJsonAsync<UpdateUserCommand>($"{httpClient.BaseAddress}/{updateUserCommand.Id}", updateUserCommand);
+        }
+
+        public async Task<HttpResponseMessage> CreateUser(CreateUserCommand createUserCommand)
+        {
+            return await httpClient.PostAsJsonAsync<CreateUserCommand>($"{httpClient.BaseAddress}", createUserCommand);
         }
     }
 }
