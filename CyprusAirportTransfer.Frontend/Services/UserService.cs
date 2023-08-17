@@ -27,9 +27,19 @@ namespace CyprusAirportTransfer.Frontend.Services
             return await httpClient.GetFromJsonAsync<Result<GetUserByIdDto>>($"{httpClient.BaseAddress}/{id}");
         }
 
-        public async Task<HttpResponseMessage> UpdateUser(UpdateUserCommand updateUserCommand)
+        public async Task<Result<int>?> UpdateUser(UpdateUserCommand updateUserCommand)
         {
-            return await httpClient.PutAsJsonAsync<UpdateUserCommand>($"{httpClient.BaseAddress}/{updateUserCommand.Id}", updateUserCommand);
+            var response = await httpClient.PutAsJsonAsync<UpdateUserCommand>($"{httpClient.BaseAddress}/{updateUserCommand.Id}", updateUserCommand);
+            if (response.IsSuccessStatusCode)
+            {
+                // Deserialize the response content to get the Result<int> value
+                var result = await response.Content.ReadFromJsonAsync<Result<int>>();
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<HttpResponseMessage> CreateUser(CreateUserCommand createUserCommand)

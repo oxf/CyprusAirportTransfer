@@ -101,7 +101,10 @@
             Email = userFull.Email,
             UserName = userFull.UserName
         });
-        message = updateResult.RequestMessage.ToString();
+        foreach(var responseMessage in updateResult.Messages)
+        {
+            message += "- " + responseMessage + "\n";
+        }
         title = userFull.UserName;
         subtitle = userFull.Email;
         StateHasChanged();

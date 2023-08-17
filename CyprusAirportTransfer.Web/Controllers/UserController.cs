@@ -84,7 +84,8 @@ namespace CyprusAirportTransfer.Web.Controllers
                 return BadRequest();
             }
 
-            return await _mediator.Send(command);
+            var res = await _mediator.Send(command);
+            return res;
         }
 
         [HttpDelete("{id}")]
