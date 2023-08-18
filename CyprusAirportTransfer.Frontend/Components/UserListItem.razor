@@ -23,36 +23,35 @@
                         <p>
                             <div class="form-group row">
                                 <div class="col-md-2">ID</div>
-                                <div class="col-md-7"><InputNumber @bind-Value="@userFull.Id" contenteditable="false" /></div>
+                                <div class="col-md-7"><InputNumber @bind-Value="@userFull.Id" readonly="true" /></div>
                             </div>
                         </p>
                         <p>
                             <div class="form-group row">
                                 <div class="col-md-2">Email</div>
-                                <div class="col-md-7"><InputText @bind-Value="@userFull.Email" contenteditable="true" /></div>
+                                <div class="col-md-7"><InputText @bind-Value="@userFull.Email" /></div>
                             </div>
                         </p>
                         <p>
                             <div class="form-group row">
                                 <div class="col-md-2">Username</div>
-                                <div class="col-md-7"><InputText @bind-Value="@userFull.UserName" contenteditable="true" /></div>
+                                <div class="col-md-7"><InputText @bind-Value="@userFull.UserName" /></div>
                             </div>
                         </p>
                         <p>
                             <div class="form-group row">
                                 <div class="col-md-2">Created</div>
-                                <div class="col-md-7"><InputDate @bind-Value="@userFull.CreatedDate" contenteditable="false" /></div>
+                                <div class="col-md-7"><InputDate @bind-Value="@userFull.CreatedDate" readonly="true" /></div>
                             </div>
                         </p>
                         <p>
                             <div class="form-group row">
                                 <div class="col-md-2">Updated</div>
-                                <div class="col-md-7"><InputDate @bind-Value="@userFull.UpdatedDate" contenteditable="false" /></div>
+                                <div class="col-md-7"><InputDate @bind-Value="@userFull.UpdatedDate" readonly="true" /></div>
                             </div>
                         </p>
                     </EditForm>
                 }
-
             </div>
         </div>
         <div class="col-md-2 user-list-item-buttons">
@@ -88,9 +87,15 @@
 
     protected override void OnParametersSet()
     {
-        ArgumentNullException.ThrowIfNull(user);
-        title = user.UserName;
-        subtitle = user.Email;
+        if(user != null)
+        {
+            title = user.UserName;
+            subtitle = user.Email;
+        } else
+        {
+            title = "Problem with loading the user, please reload the page";
+            subtitle = "";
+        }
     }
 
     protected override void OnInitialized() => userService = new UserService();
@@ -103,13 +108,16 @@
             Email = userFull.Email,
             UserName = userFull.UserName
         });
-        foreach(var responseMessage in updateResult.Messages)
+        if(updateResult != null)
         {
-            message += "- " + responseMessage + "\n";
+            foreach (var responseMessage in updateResult.Messages)
+            {
+                message += "- " + responseMessage + "\n";
+            }
+            title = userFull.UserName;
+            subtitle = userFull.Email;
+            await OnFormSubmitted.InvokeAsync();
         }
-        title = userFull.UserName;
-        subtitle = userFull.Email;
-        await OnFormSubmitted.InvokeAsync();
     }
 
     protected async Task Expand()
