@@ -46,5 +46,21 @@ namespace CyprusAirportTransfer.Frontend.Services
         {
             return await httpClient.PostAsJsonAsync<CreateUserCommand>($"{httpClient.BaseAddress}", createUserCommand);
         }
+
+        public async Task<Result<int>?> DeleteUser(int id)
+        {
+            var response = await httpClient.DeleteAsync($"{httpClient.BaseAddress}/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                // Deserialize the response content to get the Result<int> value
+                var result = await response.Content.ReadFromJsonAsync<Result<int>>();
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
     }
 }

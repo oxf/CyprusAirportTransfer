@@ -6,14 +6,14 @@
 <div class="user-list-item container">
     <div class="row">
         <div class="col-md-10">
-            <row>
+            <div class="row">
                 <h5>@title</h5>
                 <p>@subtitle</p>
-            </row>
-            <row>
+            </div>
+            <div class="row">
                 <p id="labelMessage" class="col-md-2 alert-success">@message</p>
-            </row>
-            <row style="@(Collapsed ? "display:none;" : "display:block;")">
+            </div>
+            <div class="row" style="@(Collapsed ? "display:none;" : "display:block;")">
                 @if(userFull == null)
                 {
                     <p><em>Loading...</em></p>
@@ -53,7 +53,7 @@
                     </EditForm>
                 }
 
-            </row>
+            </div>
         </div>
         <div class="col-md-2 user-list-item-buttons">
             <div id="btnView" @onclick="()=> {
@@ -64,8 +64,8 @@
                     message = null;
                 }
             }" style="display:block" class="btn btn-primary user-list-item-button">@(Collapsed ? "View" : "Hide")</div>
-            <div id="btnSave" @onclick="HandleValidSubmitAsync" type="submit" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
-            <div id="btnDelete" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-danger user-list-item-button">Delete</div>
+            <div @onclick="HandleValidSubmitAsync" type="submit" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-primary user-list-item-button">Save</div>
+            <div @onclick="DeleteUserAsync" type="submit" style="@(Collapsed ? "display:none;" : "display:block;")" class="btn btn-danger user-list-item-button">Delete</div>
         </div>
     </div>
 </div>
@@ -79,10 +79,12 @@
     [Parameter]
     public GetAllUsersDto? user { get; set; }
 
-    [Parameter]
     public GetUserByIdDto? userFull { get; set; }
 
     private bool Collapsed = true;
+
+    [Parameter]
+    public EventCallback OnFormSubmitted { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -107,7 +109,7 @@
         }
         title = userFull.UserName;
         subtitle = userFull.Email;
-        StateHasChanged();
+        await OnFormSubmitted.InvokeAsync();
     }
 
     protected async Task Expand()
@@ -121,5 +123,17 @@
                 StateHasChanged();
             }
         }
+    }
+
+    private async Task DeleteUserAsync()
+    {
+        var deleteResult = await userService.DeleteUser(userFull.Id);
+
+        foreach (var responseMessage in deleteResult.Messages)
+        {
+            message += "- " + responseMessage + "\n";
+        }
+
+        await OnFormSubmitted.InvokeAsync();
     }
 }

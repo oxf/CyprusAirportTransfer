@@ -52,6 +52,9 @@
 
     private bool Collapsed = true;
 
+    [Parameter]
+    public EventCallback OnFormSubmitted { get; set; }
+
     protected override void OnInitialized() => userService = new UserService();
 
     private async Task HandleValidSubmitAsync()
@@ -62,6 +65,7 @@
             message = "User was created";
             Clean();
         }
+        await OnFormSubmitted.InvokeAsync();
     }
 
     protected void Clean()

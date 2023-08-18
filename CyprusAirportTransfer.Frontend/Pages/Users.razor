@@ -6,15 +6,15 @@
 <PageTitle>Users</PageTitle>
 
 <h1>List of Users</h1>
-<row>
+<div class="row">
     <div class="col-md-2">
-        <button class="add-button btn btn-primary" @onclick="DisplayNewUserForm">@(displayNewUserForm ? "Hide" : "New")</button>
+        <div class="add-button btn btn-primary" @onclick="DisplayNewUserForm">@(displayNewUserForm ? "Hide" : "New")</div>
     </div>
-</row>
-<row style="@(displayNewUserForm ? "display:block;" : "display:none;")">
-    <CyprusAirportTransfer.Frontend.Components.NewUserForm  />
-</row>
-<row>
+</div>
+<div class="row" style="@(displayNewUserForm ? "display:block;" : "display:none;")">
+    <CyprusAirportTransfer.Frontend.Components.NewUserForm OnFormSubmitted="HandleFormSubmitted" />
+</div>
+<div class="row">
     @if (users == null)
     {
         <p><em>Loading...</em></p>
@@ -23,10 +23,10 @@
     {
         @foreach (var user in users)
         {
-            <CyprusAirportTransfer.Frontend.Components.UserListItem user="user"/>
+            <CyprusAirportTransfer.Frontend.Components.UserListItem user="user" OnFormSubmitted="HandleFormSubmitted" />
         }
     }
-</row>
+</div>
 
 @code {
     private List<GetAllUsersDto> users;
@@ -42,10 +42,20 @@
             users = result.Data;
         }
     }
-
+     
     protected void DisplayNewUserForm()
     {
         displayNewUserForm = !displayNewUserForm;
+    }
+
+    private async Task HandleFormSubmitted()
+    {
+        var client = new UserService();
+        var result = await client.GetUsersAsync();
+        if (result.Succeeded)
+        {
+            users = result.Data;
+        }
     }
 
 }
