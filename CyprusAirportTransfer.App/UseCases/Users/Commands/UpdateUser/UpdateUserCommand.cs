@@ -40,7 +40,15 @@ namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
             var validationResult = await _updateUserValidator.ValidateAsync(command, cancellationToken);
             if(!validationResult.IsValid)
             {
-                return await Result<int>.FailureAsync("Validation failed");
+                var errorsStringList = "";
+                foreach(var validationError in validationResult.Errors)
+                {
+                    errorsStringList = "- " + validationError.ErrorMessage + "\n";
+                }
+                
+                var result = await Result<int>.FailureAsync(errorsStringList);
+                result.Code = 404;
+                return result;
             }
             var user = await _unitOfWork.Repository<User>().GetByIdAsync(command.Id);
             if (user != null)

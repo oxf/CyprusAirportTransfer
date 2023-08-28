@@ -102,6 +102,7 @@
 
     private async Task HandleValidSubmitAsync()
     {
+        message = "";
         var updateResult = await userService.UpdateUser(new UpdateUserCommand
         {
             Id = userFull.Id,

@@ -13,10 +13,10 @@ namespace CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser
             RuleFor(x => x.Email)
                 .EmailAddress()
                 .WithMessage("Email should be in a correct format.");
-            RuleFor(x => _userRepository.GetUserByUsername(x.UserName))
+            RuleFor(x => _userRepository.GetOtherUserByUsername(x.UserName, x.Id))
                 .Null()
                 .WithMessage("Username is already registered.");
-            RuleFor(x => _userRepository.GetUserByEmail(x.Email))
+            RuleFor(x => _userRepository.GetOtherUserByEmail(x.Email, x.Id))
                 .Null()
                 .WithMessage("Email is already registered.");
         }
