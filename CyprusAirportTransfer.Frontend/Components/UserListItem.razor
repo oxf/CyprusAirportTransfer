@@ -1,5 +1,6 @@
 ﻿@using CyprusAirportTransfer.App.UseCases.Users.Commands.UpdateUser;
 @using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination;
 @using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserById;
 @using CyprusAirportTransfer.Frontend.Services;
 @using Microsoft.AspNetCore.Components.Forms;
@@ -76,7 +77,7 @@
 
     private UserService userService { get; set; }
     [Parameter]
-    public GetAllUsersDto? user { get; set; }
+    public GetUsersWithPaginationDto? user { get; set; }
 
     public GetUserByIdDto? userFull { get; set; }
 

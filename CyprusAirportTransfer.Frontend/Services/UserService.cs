@@ -4,6 +4,7 @@ using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
 using CyprusAirportTransfer.Shared;
 using System.Net.Http.Json;
 using CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser;
+using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination;
 
 namespace CyprusAirportTransfer.Frontend.Services
 {
@@ -20,6 +21,12 @@ namespace CyprusAirportTransfer.Frontend.Services
         public async Task<Result<List<GetAllUsersDto>>> GetUsersAsync()
         {
             return await httpClient.GetFromJsonAsync<Result<List<GetAllUsersDto>>>(httpClient.BaseAddress);
+        }
+
+        public async Task<Result<PaginatedResult<GetUsersWithPaginationDto>>> GetUsersPagedAsync(int pageNumber, int pageSize)
+        {
+            string a = await httpClient.GetStringAsync($"{httpClient.BaseAddress}/paged?PageNumber={pageNumber}&PageSize={pageSize}");
+            return await httpClient.GetFromJsonAsync<Result<PaginatedResult<GetUsersWithPaginationDto>>>($"{httpClient.BaseAddress}/paged?PageNumber={pageNumber}&PageSize={pageSize}");
         }
 
         public async Task<Result<GetUserByIdDto>> GetUserByIdAsync(int id)

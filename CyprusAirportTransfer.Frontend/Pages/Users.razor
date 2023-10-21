@@ -1,5 +1,6 @@
 ﻿@page "/users"
 @using CyprusAirportTransfer.App.UseCases.Users.Queries.GetAllUsers;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination;
 @using CyprusAirportTransfer.Frontend.Services;
 @inject HttpClient Http
 
@@ -27,19 +28,28 @@
         }
     }
 </div>
+<div class="row">
+    @for(int i = 1; i <= totalPages; i++)
+    {
+        <p>i</p>
+    }
+</div>   
 
 @code {
-    private List<GetAllUsersDto> users;
-
+    private List<GetUsersWithPaginationDto> users;
+    private int pageNumber = 1;
+    private int totalPages;
+    private int pageSize = 2;
     private bool displayNewUserForm = false;
 
     protected override async Task OnInitializedAsync()
     {
         var client = new UserService();
-        var result = await client.GetUsersAsync();
+        var result = await client.GetUsersPagedAsync(pageNumber, pageSize);
         if(result.Succeeded)
         {
-            users = result.Data;
+            users = result.Data.Data;
+            totalPages = result.Data.TotalPages;
         }
     }
      
@@ -51,10 +61,11 @@
     private async Task HandleFormSubmitted()
     {
         var client = new UserService();
-        var result = await client.GetUsersAsync();
+        var result = await client.GetUsersPagedAsync(pageNumber, pageSize);
         if (result.Succeeded)
         {
-            users = result.Data;
+            users = result.Data.Data;
+            totalPages = result.Data.TotalPages;
         }
     }
 

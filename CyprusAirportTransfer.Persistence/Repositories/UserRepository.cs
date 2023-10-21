@@ -29,7 +29,6 @@ namespace CyprusAirportTransfer.Persistence.Repositories
         public User GetOtherUserByUsername(string username, int userId) =>
             _repository.Entities.Where(x => x.UserName == username && x.Id != userId).FirstOrDefault();
 
-
         public User GetOtherUserByEmail(string email, int userId) =>
             _repository.Entities.Where(x => x.Email == email && x.Id != userId).FirstOrDefault();
 

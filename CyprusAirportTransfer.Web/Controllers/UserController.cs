@@ -53,7 +53,7 @@ namespace CyprusAirportTransfer.Web.Controllers
 
             if (result.IsValid)
             {
-                return await _mediator.Send(query);
+                return Ok(new Result<PaginatedResult<GetUsersWithPaginationDto>> { Succeeded = true, Data = await _mediator.Send(query)});
             }
 
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();

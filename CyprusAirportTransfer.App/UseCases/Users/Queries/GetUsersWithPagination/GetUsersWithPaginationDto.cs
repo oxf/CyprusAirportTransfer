@@ -9,5 +9,10 @@ namespace CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination
         public string UserName { get; init; }
         public string Email { get; init; }
         public int DisplayOrder { get; init; }
+
+        public GetUsersWithPaginationDto()
+        {
+
+        }
     }
 }
