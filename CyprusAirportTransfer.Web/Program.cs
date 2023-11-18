@@ -1,10 +1,17 @@
 using CyprusAirportTransfer.App.Extensions;
+using CyprusAirportTransfer.App.Interfaces;
 using CyprusAirportTransfer.Infrastructure.Extensions;
+using CyprusAirportTransfer.Infrastructure.Services;
 using CyprusAirportTransfer.Persistence.Extensions;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container.services.
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole(); // You can add other logging providers here if needed
+});
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddPersistenceLayer(builder.Configuration);
@@ -21,6 +28,10 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+var serviceProvider = builder.Services.BuildServiceProvider();
+var botService = serviceProvider.GetService<IChatbotService>() as TelegramBotService;
+botService?.StartReceivingUpdates();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

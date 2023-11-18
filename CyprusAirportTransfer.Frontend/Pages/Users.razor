@@ -31,7 +31,8 @@
 <div class="row">
     @for(int i = 1; i <= totalPages; i++)
     {
-        <p>i</p>
+        int locali = i;
+        <div div class="btn btn-primary" @onclick="() => ChangePage(locali)">@locali</div>
     }
 </div>   
 
@@ -52,10 +53,16 @@
             totalPages = result.Data.TotalPages;
         }
     }
-     
+
     protected void DisplayNewUserForm()
     {
         displayNewUserForm = !displayNewUserForm;
+    }
+
+    protected void ChangePage(int i)
+    {
+        pageNumber = i;
+        StateHasChanged();
     }
 
     private async Task HandleFormSubmitted()

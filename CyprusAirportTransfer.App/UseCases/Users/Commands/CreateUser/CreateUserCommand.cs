@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using CyprusAirportTransfer.App.Common.Mappings;
 using CyprusAirportTransfer.Shared;
 using System.Collections;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CyprusAirportTransfer.App.UseCases.Users.Commands.CreateUser
 {
