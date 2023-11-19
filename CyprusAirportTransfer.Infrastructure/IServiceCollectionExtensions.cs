@@ -82,7 +82,6 @@ namespace CyprusAirportTransfer.Infrastructure.Extensions
         }
     }
 
-
     public class TelegramSettings
     {
         public string TelegramBotToken { get; set; }

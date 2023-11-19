@@ -1,8 +1,10 @@
 ﻿using CyprusAirportTransfer.App.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace CyprusAirportTransfer.Infrastructure.Services
 {
@@ -19,17 +21,31 @@ namespace CyprusAirportTransfer.Infrastructure.Services
 
         public void StartReceivingUpdates()
         {
+            _telegramBotClient.SetMyCommandsAsync(new List<BotCommand> { new BotCommand { Command = "vacancy", Description = "Get Vacancy list" } });
             _telegramBotClient.StartReceiving(UpdateHandler, ErrorHandler);
         }
 
-        private Task UpdateHandler(ITelegramBotClient client, Update update, CancellationToken token)
+        private async Task UpdateHandler(ITelegramBotClient client, Update update, CancellationToken token)
         {
-            if(update.Message != null)
+            if (update.Message != null)
             {
+                if (update.Message.Entities != null)
+                {
+                    // process the commands
+                    foreach (var entity in update.Message.Entities)
+                    {
+                        if (entity.Type == MessageEntityType.BotCommand)
+                        {
+                            await ProcessCommand(client, update);
+                        }
+                    }
+                } 
+                // process the message
                 StringBuilder sb = new StringBuilder();
                 sb.Append($"{update.Message.From.FirstName} sent message {update.Message.MessageId} ");
                 sb.Append($"to chat {update.Message.Chat.Id} at {update.Message.Date}. ");
-                if (update.Message.ReplyToMessage != null) {
+                if (update.Message.ReplyToMessage != null)
+                {
                     sb.Append($"It is a reply to message {update.Message.ReplyToMessage.MessageId} ");
                 }
                 if (update.Message.Entities != null)
@@ -37,8 +53,22 @@ namespace CyprusAirportTransfer.Infrastructure.Services
                     sb.Append($"and has {update.Message.Entities.Length} message entities.");
                 }
                 _logger.LogInformation(sb.ToString());
+                client.SendTextMessageAsync(update.Message.Chat.Id, "This is my answer");
             }
-            return Task.CompletedTask;
+        }
+
+        private async Task ProcessCommand(ITelegramBotClient client, Update update)
+        {
+            //command
+            switch (update.Message.Text)
+            {
+                case "/vacancy":
+                    client.SendTextMessageAsync(update.Message.Chat.Id, "Vacancy list");
+                    break;
+                default:
+                    client.SendTextMessageAsync(update.Message.Chat.Id, "Command is not supported");
+                    break;
+            }
         }
 
         private Task ErrorHandler(ITelegramBotClient client, Exception exception, CancellationToken token)
