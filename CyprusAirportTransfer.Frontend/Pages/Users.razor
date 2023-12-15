@@ -15,26 +15,8 @@
 <div class="row" style="@(displayNewUserForm ? "display:block;" : "display:none;")">
     <CyprusAirportTransfer.Frontend.Components.NewUserForm OnFormSubmitted="HandleFormSubmitted" />
 </div>
-<div class="row">
-    @if (users == null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else
-    {
-        @foreach (var user in users)
-        {
-            <CyprusAirportTransfer.Frontend.Components.UserListItem user="user" OnFormSubmitted="HandleFormSubmitted" />
-        }
-    }
-</div>
-<div class="row">
-    @for(int i = 1; i <= totalPages; i++)
-    {
-        int locali = i;
-        <div div class="btn btn-primary" @onclick="() => ChangePage(locali)">@locali</div>
-    }
-</div>   
+<CyprusAirportTransfer.Frontend.Components.UserGrid users="@users" pageNumber="@pageNumber" OnFormSubmitted="HandleFormSubmitted" ></CyprusAirportTransfer.Frontend.Components.UserGrid>
+
 
 @code {
     private List<GetUsersWithPaginationDto> users;
@@ -54,15 +36,15 @@
         }
     }
 
-    protected void DisplayNewUserForm()
+    private async Task PageNumberChanged))()
     {
-        displayNewUserForm = !displayNewUserForm;
-    }
-
-    protected void ChangePage(int i)
-    {
-        pageNumber = i;
-        StateHasChanged();
+        var client = new UserService();
+        var result = await client.GetUsersPagedAsync(pageNumber, pageSize);
+        if (result.Succeeded)
+        {
+            users = result.Data.Data;
+            totalPages = result.Data.TotalPages;
+        }
     }
 
     private async Task HandleFormSubmitted()
@@ -76,4 +58,8 @@
         }
     }
 
+    protected void DisplayNewUserForm()
+    {
+        displayNewUserForm = !displayNewUserForm;
+    }
 }

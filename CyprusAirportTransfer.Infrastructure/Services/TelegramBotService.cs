@@ -39,9 +39,13 @@ namespace CyprusAirportTransfer.Infrastructure.Services
                             await ProcessCommand(client, update);
                         }
                     }
-                } 
+                }
+                // process the file
+                if (update.Message.Document != null)
+                {
+                }
                 // process the message
-                StringBuilder sb = new StringBuilder();
+                    StringBuilder sb = new StringBuilder();
                 sb.Append($"{update.Message.From.FirstName} sent message {update.Message.MessageId} ");
                 sb.Append($"to chat {update.Message.Chat.Id} at {update.Message.Date}. ");
                 if (update.Message.ReplyToMessage != null)
