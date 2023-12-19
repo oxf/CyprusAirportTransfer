@@ -1,6 +1,6 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 @ApiApplication1_HostAddress = https://localhost:7193
 
-Get {{ApiApplication1_HostAddress}}/user/
+Get {{ApiApplication1_HostAddress}}/api/user/
 
 ###

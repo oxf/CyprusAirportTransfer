@@ -77,7 +77,7 @@ namespace CyprusAirportTransfer.Infrastructure.Services
 
         private Task ErrorHandler(ITelegramBotClient client, Exception exception, CancellationToken token)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
