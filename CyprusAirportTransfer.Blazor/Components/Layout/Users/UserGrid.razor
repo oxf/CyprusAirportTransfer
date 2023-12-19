@@ -1,0 +1,72 @@
+﻿@using CyprusAirportTransfer.Blazor.Services;
+@using CyprusAirportTransfer.App.UseCases.Users.Queries.GetUserWithPagination;
+<h3>UserGrid</h3>
+<div class="row">
+    @if (Users == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        @foreach (var user in Users)
+        {
+            <CyprusAirportTransfer.Blazor.Components.UserListItem user="user" OnFormSubmitted="OnFormSubmitted" />
+        }
+    }
+</div>
+<div class="row">
+    @for (int i = 1; i <= TotalPages; i++)
+    {
+        int locali = i;
+        <div div class="btn btn-primary" @onclick="() => ChangePage(locali)">@locali</div>
+    }
+</div>
+@code {
+    [Parameter]
+    public List<GetUsersWithPaginationDto> Users { get; set; }
+
+    [Parameter]
+    public EventCallback OnFormSubmitted { get; set; }
+
+    private int TotalPages { get; set; }
+
+    private int CurrentPage { get; set; }
+
+    private int PageSize { get; set; } = 10;
+
+    public UserGrid()
+    {}
+
+    public UserGrid(List<GetUsersWithPaginationDto> Users)
+    {
+        this.Users = Users;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new UserService();
+        var result = await client.GetUsersPagedAsync(CurrentPage, PageSize);
+        if (result.Succeeded)
+        {
+            Users = result.Data.Data;
+            TotalPages = result.Data.TotalPages;
+        }
+    }
+
+    // private async Task HandleFormSubmitted()
+    // {
+    //     var client = new UserService();
+    //     var result = await client.GetUsersPagedAsync(CurrentPage, PageSize);
+    //     if (result.Succeeded)
+    //     {
+    //         Users = result.Data.Data;
+    //         TotalPages = result.Data.TotalPages;
+    //     }
+    // }
+
+    protected void ChangePage(int i)
+    {
+        CurrentPage = i;
+        StateHasChanged();
+    }
+}

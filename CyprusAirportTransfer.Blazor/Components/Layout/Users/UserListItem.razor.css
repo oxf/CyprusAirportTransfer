@@ -1,0 +1,13 @@
+﻿.user-list-item {
+    border: solid 1px #0F0F0F;
+    border-radius: 4px;
+    margin: 6px;
+}
+
+.user-list-item-button {
+    margin: 2px;
+}
+
+user-list-item-buttons {
+    flex-direction: row;
+}

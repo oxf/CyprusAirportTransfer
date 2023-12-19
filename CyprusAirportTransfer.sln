@@ -19,6 +19,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyprusAirportTransfer.Infrastructure", "CyprusAirportTransfer.Infrastructure\CyprusAirportTransfer.Infrastructure.csproj", "{4F49C9FD-B917-440D-9CBA-6E0DBEE4BEF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyprusAirportTransfer.Blazor", "CyprusAirportTransfer.Blazor\CyprusAirportTransfer.Blazor.csproj", "{3F3F1BA4-587D-4316-AD86-5ADE12B82BB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AD8AB307-C583-4FFA-BFE4-FEA5BB8EEF7F} = {AD8AB307-C583-4FFA-BFE4-FEA5BB8EEF7F}
+		{C4F27965-B2F9-4275-A285-9C0ABD294E98} = {C4F27965-B2F9-4275-A285-9C0ABD294E98}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
